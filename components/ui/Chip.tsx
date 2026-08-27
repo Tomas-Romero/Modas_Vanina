@@ -11,7 +11,7 @@ export function Chip({
     <button
       type="button"
       className={cn(
-        "shrink-0 rounded-full border px-4 py-2 text-sm font-medium transition-colors",
+        "shrink-0 rounded-full border px-4 py-2 text-sm font-medium transition-all active:scale-95",
         active
           ? "border-accent bg-accent text-[var(--accent-ink)]"
           : "border-line bg-surface text-ink-soft hover:border-accent/40 hover:text-ink",

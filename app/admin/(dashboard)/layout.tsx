@@ -1,8 +1,14 @@
+import type { Metadata } from "next";
 import Link from "next/link";
-import { LogOut, Package, Tag, ExternalLink } from "lucide-react";
+import { LogOut, Package, Tag, ExternalLink, BarChart3 } from "lucide-react";
 import { Logo } from "@/components/layout/Logo";
 import { logoutAction } from "@/app/admin/actions";
 import { hasSupabaseConfig } from "@/lib/supabase/client";
+
+export const metadata: Metadata = {
+  title: { default: "Panel", template: "%s — Panel" },
+  robots: { index: false, follow: false },
+};
 
 export default function AdminDashboardLayout({ children }: { children: React.ReactNode }) {
   const configured = hasSupabaseConfig();
@@ -10,9 +16,9 @@ export default function AdminDashboardLayout({ children }: { children: React.Rea
   return (
     <div className="min-h-dvh bg-bg">
       <header className="sticky top-0 z-40 border-b border-line/70 bg-surface/95 backdrop-blur-md">
-        <div className="mx-auto flex h-16 max-w-5xl items-center justify-between px-4 md:px-8">
+        <div className="mx-auto flex h-20 max-w-5xl items-center justify-between px-4 md:px-8">
           <div className="flex items-center gap-6">
-            <Logo href="/admin/productos" />
+            <Logo href="/admin/productos" size="sm" />
             <nav className="hidden items-center gap-1 sm:flex">
               <Link
                 href="/admin/productos"
@@ -25,6 +31,12 @@ export default function AdminDashboardLayout({ children }: { children: React.Rea
                 className="flex items-center gap-1.5 rounded-full px-3 py-2 text-sm font-medium text-ink-soft hover:bg-surface-2 hover:text-ink"
               >
                 <Tag className="h-4 w-4" /> Ofertas
+              </Link>
+              <Link
+                href="/admin/estadisticas"
+                className="flex items-center gap-1.5 rounded-full px-3 py-2 text-sm font-medium text-ink-soft hover:bg-surface-2 hover:text-ink"
+              >
+                <BarChart3 className="h-4 w-4" /> Estadísticas
               </Link>
             </nav>
           </div>
@@ -60,6 +72,12 @@ export default function AdminDashboardLayout({ children }: { children: React.Rea
             className="flex flex-1 items-center justify-center gap-1.5 rounded-full px-3 py-2 text-sm font-medium text-ink-soft hover:bg-surface-2 hover:text-ink"
           >
             <Tag className="h-4 w-4" /> Ofertas
+          </Link>
+          <Link
+            href="/admin/estadisticas"
+            className="flex flex-1 items-center justify-center gap-1.5 rounded-full px-3 py-2 text-sm font-medium text-ink-soft hover:bg-surface-2 hover:text-ink"
+          >
+            <BarChart3 className="h-4 w-4" /> Stats
           </Link>
         </nav>
       </header>

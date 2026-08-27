@@ -3,12 +3,12 @@
 @tailwind utilities;
 
 :root {
-  --bg: #fbf8f4;
-  --surface: #ffffff;
-  --surface-2: #f3ece5;
+  --bg: #f7efe0;
+  --surface: #fdf8ee;
+  --surface-2: #f1e5cf;
   --ink: #241e1b;
   --ink-soft: #6e625b;
-  --line: #e4d9ce;
+  --line: #e6d7ba;
   --accent: #8c2f4b;
   --accent-ink: #fef7f9;
   --gold: #a9793a;
@@ -34,6 +34,7 @@
 
 html {
   color-scheme: light;
+  scroll-behavior: smooth;
 }
 
 html.dark {
@@ -46,6 +47,9 @@ body {
 }
 
 @media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
   *,
   *::before,
   *::after {
@@ -67,4 +71,13 @@ body {
 .no-scrollbar {
   -ms-overflow-style: none;
   scrollbar-width: none;
+}
+
+@keyframes pulse-ring {
+  0% {
+    box-shadow: 0 0 0 0 color-mix(in srgb, var(--good) 45%, transparent);
+  }
+  100% {
+    box-shadow: 0 0 0 14px color-mix(in srgb, var(--good) 0%, transparent);
+  }
 }

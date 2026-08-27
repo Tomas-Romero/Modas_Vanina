@@ -1,3 +1,4 @@
+import type { Metadata } from "next";
 import Link from "next/link";
 import { Info } from "lucide-react";
 import { Logo } from "@/components/layout/Logo";
@@ -5,12 +6,17 @@ import { LoginForm } from "@/components/admin/LoginForm";
 import { Button } from "@/components/ui/Button";
 import { hasSupabaseConfig } from "@/lib/supabase/client";
 
+export const metadata: Metadata = {
+  title: "Ingresar",
+  robots: { index: false, follow: false },
+};
+
 export default function AdminLoginPage() {
   const configured = hasSupabaseConfig();
 
   return (
     <div className="flex min-h-dvh flex-col items-center justify-center gap-8 bg-bg px-4">
-      <Logo href="/" />
+      <Logo href="/" size="lg" />
 
       {configured ? (
         <LoginForm />

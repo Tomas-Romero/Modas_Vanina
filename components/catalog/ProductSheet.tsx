@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { MessageCircle, ShoppingBag, Check } from "lucide-react";
+import { MessageCircle, ShoppingBag, Check, Share2 } from "lucide-react";
 import { Sheet } from "@/components/ui/Sheet";
 import { Button } from "@/components/ui/Button";
 import { AvailabilityBadge } from "@/components/ui/Badge";
@@ -9,6 +9,8 @@ import { ProductImage } from "@/components/ui/ProductImage";
 import { useMiLista } from "@/lib/hooks/useMiLista";
 import { useToast } from "@/components/ui/Toast";
 import { buildProductWhatsAppLink } from "@/lib/whatsapp";
+import { shareOrCopyLink } from "@/lib/share";
+import { recordWhatsAppClickAction } from "@/app/(site)/actions";
 import { CATEGORY_LABELS, type Product } from "@/lib/types";
 
 export function ProductSheet({
@@ -28,6 +30,18 @@ export function ProductSheet({
     if (!product) return;
     add({ id: product.id, name: product.name, category: product.category });
     showToast(`${product.name} se agregó a tu lista`);
+  }
+
+  async function handleShare() {
+    if (!product) return;
+    const url = `${window.location.origin}/catalogo?producto=${product.id}`;
+    const result = await shareOrCopyLink({
+      title: product.name,
+      text: `Mirá "${product.name}" en Modas Vanina`,
+      url,
+    });
+    if (result === "copied") showToast("Link copiado");
+    if (result === "failed") showToast("No se pudo compartir el link");
   }
 
   return (
@@ -70,7 +84,17 @@ export function ProductSheet({
                 </p>
                 <h2 className="mt-1 font-display text-2xl text-ink">{product.name}</h2>
               </div>
-              <AvailabilityBadge availability={product.availability} className="mt-1 shrink-0" />
+              <div className="flex shrink-0 items-center gap-2">
+                <AvailabilityBadge availability={product.availability} className="mt-1" />
+                <button
+                  type="button"
+                  onClick={handleShare}
+                  aria-label="Compartir producto"
+                  className="rounded-full p-2 text-ink-soft transition-colors hover:bg-surface-2 hover:text-accent"
+                >
+                  <Share2 className="h-4 w-4" />
+                </button>
+              </div>
             </div>
 
             <p className="mt-4 text-sm leading-relaxed text-ink-soft">
@@ -100,6 +124,7 @@ export function ProductSheet({
                 target="_blank"
                 rel="noopener noreferrer"
                 className="flex-1"
+                onClick={() => recordWhatsAppClickAction(product.id)}
               >
                 <Button variant="whatsapp" size="lg" className="w-full">
                   <MessageCircle className="h-4 w-4" /> Preguntar por WhatsApp

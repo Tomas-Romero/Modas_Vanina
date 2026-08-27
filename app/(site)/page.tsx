@@ -1,8 +1,10 @@
 import Link from "next/link";
-import { ArrowRight } from "lucide-react";
+import { ArrowRight, Sparkles } from "lucide-react";
 import { Button } from "@/components/ui/Button";
+import { LogoMark } from "@/components/layout/Logo";
 import { CategoryShortcuts } from "@/components/home/CategoryShortcuts";
 import { OffersCarousel } from "@/components/home/OffersCarousel";
+import { RevealSection } from "@/components/home/RevealSection";
 import { getAllOffers } from "@/lib/data/offers";
 import { getProductsByIds } from "@/lib/data/products";
 import { isOfferActive } from "@/lib/types";
@@ -19,33 +21,57 @@ export default async function HomePage() {
 
   return (
     <div className="mx-auto max-w-6xl px-4 py-8 md:px-8 md:py-12">
-      <section className="animate-fade-in overflow-hidden rounded-3xl bg-surface-2 px-6 py-12 text-center md:px-16 md:py-20">
-        <h1 className="mx-auto max-w-xl text-balance font-display text-3xl leading-tight text-ink md:text-5xl">
+      <section className="relative animate-fade-in overflow-hidden rounded-3xl border border-line bg-surface-2 px-6 py-12 text-center md:px-16 md:py-20">
+        <div className="pointer-events-none absolute -right-16 -top-16 h-56 w-56 rounded-full bg-accent/10 blur-3xl" />
+        <div className="pointer-events-none absolute -bottom-20 -left-16 h-56 w-56 rounded-full bg-gold/10 blur-3xl" />
+        <h1 className="relative mx-auto max-w-xl text-balance font-display text-3xl leading-tight text-ink md:text-5xl">
           Un rincón de estilo en San Rafael
         </h1>
-        <p className="mx-auto mt-4 max-w-md text-balance text-sm text-ink-soft md:text-base">
+        <p className="relative mx-auto mt-4 max-w-md text-balance text-sm text-ink-soft md:text-base">
           {STORE_STORY}
         </p>
-        <div className="mt-7 flex justify-center">
+        <div className="relative mt-7 flex flex-wrap items-center justify-center gap-3">
           <Link href="/catalogo">
             <Button size="lg">
               Ver catálogo <ArrowRight className="h-4 w-4" />
             </Button>
           </Link>
+          {activeOffers.length > 0 && (
+            <a href="#ofertas">
+              <Button size="lg" variant="secondary">
+                <Sparkles className="h-4 w-4" /> Ver ofertas
+              </Button>
+            </a>
+          )}
         </div>
       </section>
 
-      <section className="mt-10 md:mt-14">
+      <RevealSection className="mt-10 md:mt-14">
         <h2 className="mb-4 font-display text-xl text-ink md:text-2xl">Categorías</h2>
         <CategoryShortcuts />
-      </section>
+      </RevealSection>
 
       {activeOffers.length > 0 && (
-        <section className="mt-10 md:mt-14">
-          <h2 className="mb-4 font-display text-xl text-ink md:text-2xl">Ofertas y novedades</h2>
+        <RevealSection id="ofertas" className="mt-12 scroll-mt-24 md:mt-16">
+          <div className="mb-4 flex items-end justify-between gap-4">
+            <div>
+              <p className="text-xs font-medium uppercase tracking-[0.2em] text-gold">Recién llegado</p>
+              <h2 className="font-display text-xl text-ink md:text-2xl">Ofertas y novedades</h2>
+            </div>
+            <Link
+              href="/catalogo"
+              className="shrink-0 text-sm font-medium text-accent hover:underline underline-offset-4"
+            >
+              Ver catálogo completo
+            </Link>
+          </div>
           <OffersCarousel offers={activeOffers} productsById={productsById} />
-        </section>
+        </RevealSection>
       )}
+
+      <div className="mt-14 flex justify-center opacity-60 md:mt-20">
+        <LogoMark size="sm" />
+      </div>
     </div>
   );
 }

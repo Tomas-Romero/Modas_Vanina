@@ -15,8 +15,8 @@ export function Footer() {
     <footer className="mt-16 border-t border-line/70 bg-surface">
       <div className="mx-auto grid max-w-6xl gap-8 px-4 py-10 md:grid-cols-3 md:px-8">
         <div>
-          <Logo />
-          <p className="mt-3 max-w-xs text-sm text-ink-soft">
+          <Logo size="lg" />
+          <p className="mt-4 max-w-xs text-sm text-ink-soft">
             Indumentaria, perfumería, cremas, tuppers y variedades en San Rafael, Mendoza.
           </p>
         </div>

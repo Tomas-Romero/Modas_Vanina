@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import { LogoMark } from "./Logo";
 
 // One-time branded splash for the very first paint of a fresh visit.
 // Plain client state, not Suspense — see RouteProgressBar for why.
@@ -29,10 +30,8 @@ export function InitialSplash() {
       className="fixed inset-0 z-[200] flex flex-col items-center justify-center gap-3 bg-bg"
       style={{ animation: "splash-out 0.4s ease-in 0.5s forwards" }}
     >
-      <p className="font-display text-2xl text-ink">
-        Modas <span className="text-accent">Vanina</span>
-      </p>
-      <div className="h-1 w-24 overflow-hidden rounded-full bg-surface-2">
+      <LogoMark size="lg" />
+      <div className="mt-2 h-1 w-24 overflow-hidden rounded-full bg-surface-2">
         <div className="h-full w-1/3 animate-[loading-bar_0.9s_ease-in-out_infinite] rounded-full bg-accent" />
       </div>
       <style>{`

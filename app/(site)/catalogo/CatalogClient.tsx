@@ -45,7 +45,7 @@ export function CatalogClient({ products }: { products: Product[] }) {
     <div className="mx-auto max-w-6xl px-4 py-6 md:px-8 md:py-10">
       <h1 className="font-display text-2xl text-ink md:text-3xl">Catálogo</h1>
 
-      <div className="sticky top-16 z-30 -mx-4 mt-5 space-y-3 bg-bg/95 px-4 py-3 backdrop-blur-md md:static md:mx-0 md:bg-transparent md:p-0 md:backdrop-blur-none">
+      <div className="sticky top-20 z-30 -mx-4 mt-5 space-y-3 bg-bg/95 px-4 py-3 backdrop-blur-md md:static md:mx-0 md:bg-transparent md:p-0 md:backdrop-blur-none">
         <SearchBox value={search} onChange={setSearch} />
         <CategoryFilterChips value={category} onChange={setCategory} />
       </div>

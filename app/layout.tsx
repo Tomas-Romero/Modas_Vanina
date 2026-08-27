@@ -4,7 +4,7 @@ import { ThemeProvider } from "next-themes";
 import { ToastProvider } from "@/components/ui/Toast";
 import { RouteProgressBar } from "@/components/layout/RouteProgressBar";
 import { InitialSplash } from "@/components/layout/InitialSplash";
-import { STORE_NAME } from "@/lib/constants";
+import { SITE_URL, STORE_NAME } from "@/lib/constants";
 import "./globals.css";
 
 const fraunces = Fraunces({
@@ -24,15 +24,34 @@ const ibmPlexMono = IBM_Plex_Mono({
   weight: ["400", "500"],
 });
 
+const DESCRIPTION =
+  "Indumentaria, perfumería, cremas, tuppers y variedades en San Rafael, Mendoza. Mirá el catálogo y consultá por WhatsApp.";
+
 export const metadata: Metadata = {
-  title: `${STORE_NAME} — Catálogo`,
-  description:
-    "Indumentaria, perfumería, cremas, tuppers y variedades en San Rafael, Mendoza. Mirá el catálogo y consultá por WhatsApp.",
+  metadataBase: new URL(SITE_URL),
+  title: {
+    default: `${STORE_NAME} — Catálogo`,
+    template: `%s — ${STORE_NAME}`,
+  },
+  description: DESCRIPTION,
+  openGraph: {
+    title: `${STORE_NAME} — Catálogo`,
+    description: DESCRIPTION,
+    siteName: STORE_NAME,
+    url: SITE_URL,
+    locale: "es_AR",
+    type: "website",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: `${STORE_NAME} — Catálogo`,
+    description: DESCRIPTION,
+  },
 };
 
 export const viewport: Viewport = {
   themeColor: [
-    { media: "(prefers-color-scheme: light)", color: "#FBF8F4" },
+    { media: "(prefers-color-scheme: light)", color: "#F7EFE0" },
     { media: "(prefers-color-scheme: dark)", color: "#1B1512" },
   ],
 };
@@ -45,7 +64,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
       className={`${fraunces.variable} ${workSans.variable} ${ibmPlexMono.variable}`}
     >
       <body className="font-sans antialiased">
-        <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
+        <ThemeProvider attribute="class" defaultTheme="dark" enableSystem={false}>
           <ToastProvider>
             <RouteProgressBar />
             <InitialSplash />

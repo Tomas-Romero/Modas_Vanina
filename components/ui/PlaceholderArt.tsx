@@ -1,4 +1,5 @@
 import type { Category } from "@/lib/types";
+import { cn } from "@/lib/cn";
 
 const PALETTES: [string, string][] = [
   ["var(--surface-2)", "var(--accent)"],
@@ -70,7 +71,7 @@ export function PlaceholderArt({
     <svg
       viewBox="0 0 100 100"
       preserveAspectRatio="xMidYMid slice"
-      className={className}
+      className={cn("absolute inset-0 h-full w-full", className)}
       role="img"
       aria-label={category}
     >

@@ -1,6 +1,8 @@
 import { MapPin, MessageCircle, Clock } from "lucide-react";
 import { Button } from "@/components/ui/Button";
 import { InstagramIcon } from "@/components/ui/InstagramIcon";
+import { LogoMark } from "@/components/layout/Logo";
+import { RevealSection } from "@/components/home/RevealSection";
 import {
   ADDRESS,
   INSTAGRAM_URL,
@@ -13,16 +15,23 @@ import {
 } from "@/lib/constants";
 
 export const metadata = {
-  title: "Nosotros — Modas Vanina",
+  title: "Nosotros",
+  description:
+    "Historia, dirección, horarios y contacto de Modas Vanina en San Rafael, Mendoza.",
 };
 
 export default function NosotrosPage() {
   return (
     <div className="mx-auto max-w-3xl px-4 py-8 md:px-8 md:py-12">
-      <h1 className="font-display text-2xl text-ink md:text-3xl">Nosotros</h1>
-      <p className="mt-4 text-balance leading-relaxed text-ink-soft">{STORE_STORY}</p>
+      <div className="flex justify-center">
+        <LogoMark size="lg" />
+      </div>
+      <h1 className="mt-6 text-center font-display text-2xl text-ink md:text-3xl">Nuestra historia</h1>
+      <p className="mx-auto mt-4 max-w-xl text-balance text-center leading-relaxed text-ink-soft">
+        {STORE_STORY}
+      </p>
 
-      <div className="mt-8 overflow-hidden rounded-2xl border border-line">
+      <RevealSection className="mt-8 overflow-hidden rounded-2xl border border-line">
         <iframe
           title="Ubicación de Modas Vanina"
           src={MAPS_EMBED_URL}
@@ -30,10 +39,10 @@ export default function NosotrosPage() {
           loading="lazy"
           referrerPolicy="no-referrer-when-downgrade"
         />
-      </div>
+      </RevealSection>
 
-      <div className="mt-8 grid gap-6 sm:grid-cols-2">
-        <div className="rounded-2xl border border-line bg-surface p-5">
+      <RevealSection className="mt-8 grid gap-6 sm:grid-cols-2">
+        <div className="rounded-2xl border border-line bg-surface p-5 transition-shadow hover:shadow-soft">
           <div className="flex items-center gap-2 font-medium text-ink">
             <MapPin className="h-4 w-4 text-accent" /> Dirección
           </div>
@@ -47,7 +56,7 @@ export default function NosotrosPage() {
           </a>
         </div>
 
-        <div className="rounded-2xl border border-line bg-surface p-5">
+        <div className="rounded-2xl border border-line bg-surface p-5 transition-shadow hover:shadow-soft">
           <div className="flex items-center gap-2 font-medium text-ink">
             <Clock className="h-4 w-4 text-accent" /> Horarios
           </div>
@@ -60,9 +69,9 @@ export default function NosotrosPage() {
             ))}
           </ul>
         </div>
-      </div>
+      </RevealSection>
 
-      <div className="mt-8 flex flex-col gap-3 sm:flex-row">
+      <RevealSection className="mt-8 flex flex-col gap-3 sm:flex-row">
         <a href={`https://wa.me/${WHATSAPP_NUMBER}`} target="_blank" rel="noopener noreferrer" className="flex-1">
           <Button variant="whatsapp" size="lg" className="w-full">
             <MessageCircle className="h-4 w-4" /> {WHATSAPP_DISPLAY}
@@ -73,7 +82,7 @@ export default function NosotrosPage() {
             <InstagramIcon className="h-4 w-4" /> @modas_vanina
           </Button>
         </a>
-      </div>
+      </RevealSection>
     </div>
   );
 }

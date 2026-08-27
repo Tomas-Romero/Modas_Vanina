@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import { motion } from "framer-motion";
 import { Home, Grid2x2, ShoppingBag, MapPin } from "lucide-react";
 import { cn } from "@/lib/cn";
 import { useMiLista } from "@/lib/hooks/useMiLista";
@@ -29,12 +30,21 @@ export function BottomNav() {
             <Link
               key={href}
               href={href}
-              className={cn(
-                "relative flex flex-1 flex-col items-center gap-1 py-2.5 text-[11px] font-medium transition-colors",
-                active ? "text-accent" : "text-ink-soft",
-              )}
+              className="relative flex flex-1 flex-col items-center gap-1 py-2.5 text-[11px] font-medium"
             >
-              <span className="relative">
+              {active && (
+                <motion.span
+                  layoutId="bottom-nav-pill"
+                  className="absolute inset-x-3 top-0.5 bottom-0.5 rounded-2xl bg-accent/10"
+                  transition={{ type: "spring", stiffness: 420, damping: 32 }}
+                />
+              )}
+              <span
+                className={cn(
+                  "relative z-10 transition-colors",
+                  active ? "text-accent" : "text-ink-soft",
+                )}
+              >
                 <Icon className="h-5 w-5" strokeWidth={active ? 2.4 : 2} />
                 {href === "/mi-lista" && items.length > 0 && (
                   <span className="absolute -right-2 -top-1.5 flex h-4 min-w-4 items-center justify-center rounded-full bg-accent px-1 text-[9px] font-semibold text-[var(--accent-ink)]">
@@ -42,7 +52,9 @@ export function BottomNav() {
                   </span>
                 )}
               </span>
-              {label}
+              <span className={cn("relative z-10 transition-colors", active ? "text-accent" : "text-ink-soft")}>
+                {label}
+              </span>
             </Link>
           );
         })}

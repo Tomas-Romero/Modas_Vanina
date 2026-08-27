@@ -11,9 +11,9 @@ export function ProductCard({ product, onOpen }: { product: Product; onOpen: (id
       type="button"
       onClick={() => onOpen(product.id)}
       whileTap={{ scale: 0.97 }}
-      className="group flex flex-col text-left"
+      className="group flex w-full flex-col text-left"
     >
-      <div className="relative aspect-[4/5] w-full overflow-hidden rounded-2xl bg-surface-2">
+      <div className="relative aspect-[4/5] w-full overflow-hidden rounded-2xl border border-line bg-surface-2 transition-shadow duration-300 group-hover:border-accent/30 group-hover:shadow-soft">
         <ProductImage
           src={product.images[0]}
           alt={product.name}
