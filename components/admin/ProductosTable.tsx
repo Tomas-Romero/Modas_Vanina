@@ -10,6 +10,7 @@ import { Switch } from "@/components/ui/Switch";
 import { Button } from "@/components/ui/Button";
 import { ConfirmDialog } from "@/components/ui/ConfirmDialog";
 import { ShareInstagramButton } from "@/components/admin/ShareInstagramButton";
+import { PublishToSocialButton } from "@/components/admin/PublishToSocialButton";
 import { useToast } from "@/components/ui/Toast";
 import { toggleProductHiddenAction, deleteProductAction } from "@/app/admin/productos/actions";
 import { CATEGORY_LABELS, type Product } from "@/lib/types";
@@ -84,6 +85,7 @@ export function ProductosTable({ products }: { products: Product[] }) {
                 />
               </div>
               <ShareInstagramButton product={product} />
+              <PublishToSocialButton product={product} />
               <Link
                 href={`/admin/productos/${product.id}`}
                 className="rounded-full p-2 text-ink-soft hover:bg-surface-2 hover:text-ink"
