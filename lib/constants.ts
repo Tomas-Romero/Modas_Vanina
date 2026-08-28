@@ -3,7 +3,7 @@ export const STORE_NAME = "Modas Vanina";
 // Placeholder until the site has a real domain — override with
 // NEXT_PUBLIC_SITE_URL once deployed (e.g. on Vercel) so metadata/sitemap
 // URLs, the OG image, and canonical links resolve correctly.
-export const SITE_URL = (process.env.NEXT_PUBLIC_SITE_URL ?? "http://localhost:3000").replace(
+export const SITE_URL = (process.env.NEXT_PUBLIC_SITE_URL || "http://localhost:3000").replace(
   /\/$/,
   "",
 );

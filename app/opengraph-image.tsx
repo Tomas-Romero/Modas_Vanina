@@ -1,11 +1,16 @@
 import { ImageResponse } from "next/og";
 import { STORE_NAME } from "@/lib/constants";
+import { getLogoDataUri, LOGO_ASPECT_RATIO } from "@/lib/logo-asset";
 
 export const alt = `${STORE_NAME} — Catálogo`;
 export const size = { width: 1200, height: 630 };
 export const contentType = "image/png";
 
-export default function Image() {
+export default async function Image() {
+  const logoSrc = await getLogoDataUri("lg");
+  const markHeight = 150;
+  const markWidth = Math.round(markHeight * LOGO_ASPECT_RATIO);
+
   return new ImageResponse(
     (
       <div
@@ -19,10 +24,12 @@ export default function Image() {
           background: "#1B1512",
         }}
       >
+        {/* eslint-disable-next-line @next/next/no-img-element */}
+        <img src={logoSrc} width={markWidth} height={markHeight} alt="" style={{ marginBottom: 8 }} />
         <div
           style={{
-            fontSize: 28,
-            letterSpacing: 18,
+            fontSize: 24,
+            letterSpacing: 16,
             textTransform: "uppercase",
             color: "#B7A99D",
             fontFamily: "serif",
@@ -32,8 +39,8 @@ export default function Image() {
         </div>
         <div
           style={{
-            marginTop: 14,
-            fontSize: 120,
+            marginTop: 10,
+            fontSize: 96,
             fontWeight: 700,
             letterSpacing: 4,
             textTransform: "uppercase",
@@ -43,11 +50,11 @@ export default function Image() {
         >
           Vanina
         </div>
-        <div style={{ marginTop: 28, width: 160, height: 3, background: "#E0B674" }} />
+        <div style={{ marginTop: 22, width: 140, height: 3, background: "#E0B674" }} />
         <div
           style={{
-            marginTop: 40,
-            fontSize: 26,
+            marginTop: 32,
+            fontSize: 24,
             color: "#B7A99D",
             fontFamily: "serif",
           }}

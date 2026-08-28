@@ -1,4 +1,5 @@
 import { ImageResponse } from "next/og";
+import { getLogoDataUri, LOGO_ASPECT_RATIO } from "@/lib/logo-asset";
 
 const SIZES: Record<string, number> = { small: 48, large: 192, xlarge: 512 };
 
@@ -12,6 +13,9 @@ export function generateImageMetadata() {
 
 export default async function Icon({ id }: { id: Promise<string> }) {
   const px = SIZES[await id];
+  const logoSrc = await getLogoDataUri(px > 96 ? "lg" : "sm");
+  const markHeight = Math.round(px * 0.72);
+  const markWidth = Math.round(markHeight * LOGO_ASPECT_RATIO);
 
   return new ImageResponse(
     (
@@ -26,17 +30,8 @@ export default async function Icon({ id }: { id: Promise<string> }) {
           borderRadius: "50%",
         }}
       >
-        <div
-          style={{
-            display: "flex",
-            fontSize: px * 0.46,
-            fontWeight: 700,
-            fontFamily: "serif",
-            color: "#E0B674",
-          }}
-        >
-          MV
-        </div>
+        {/* eslint-disable-next-line @next/next/no-img-element */}
+        <img src={logoSrc} width={markWidth} height={markHeight} alt="" />
       </div>
     ),
     { width: px, height: px },

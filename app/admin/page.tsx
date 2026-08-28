@@ -16,7 +16,7 @@ export default function AdminLoginPage() {
 
   return (
     <div className="flex min-h-dvh flex-col items-center justify-center gap-8 bg-bg px-4">
-      <Logo href="/" size="lg" />
+      <Logo href="/" variant="full" size="lg" />
 
       {configured ? (
         <LoginForm />

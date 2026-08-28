@@ -18,7 +18,7 @@ export default function AdminDashboardLayout({ children }: { children: React.Rea
       <header className="sticky top-0 z-40 border-b border-line/70 bg-surface/95 backdrop-blur-md">
         <div className="mx-auto flex h-20 max-w-5xl items-center justify-between px-4 md:px-8">
           <div className="flex items-center gap-6">
-            <Logo href="/admin/productos" size="sm" />
+            <Logo href="/admin/productos" iconHeight={34} />
             <nav className="hidden items-center gap-1 sm:flex">
               <Link
                 href="/admin/productos"

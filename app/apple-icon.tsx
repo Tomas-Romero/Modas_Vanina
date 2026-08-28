@@ -1,9 +1,14 @@
 import { ImageResponse } from "next/og";
+import { getLogoDataUri, LOGO_ASPECT_RATIO } from "@/lib/logo-asset";
 
 export const size = { width: 180, height: 180 };
 export const contentType = "image/png";
 
-export default function AppleIcon() {
+export default async function AppleIcon() {
+  const logoSrc = await getLogoDataUri("lg");
+  const markHeight = 128;
+  const markWidth = Math.round(markHeight * LOGO_ASPECT_RATIO);
+
   return new ImageResponse(
     (
       <div
@@ -16,17 +21,8 @@ export default function AppleIcon() {
           background: "#1B1512",
         }}
       >
-        <div
-          style={{
-            display: "flex",
-            fontSize: 80,
-            fontWeight: 700,
-            fontFamily: "serif",
-            color: "#E0B674",
-          }}
-        >
-          MV
-        </div>
+        {/* eslint-disable-next-line @next/next/no-img-element */}
+        <img src={logoSrc} width={markWidth} height={markHeight} alt="" />
       </div>
     ),
     { ...size },
