@@ -27,6 +27,7 @@ export function LogoIcon({
       alt="Modas Vanina"
       width={width}
       height={height}
+      unoptimized
       style={{ height, width: "auto" }}
       className={cn("shrink-0", className)}
     />
@@ -60,6 +61,7 @@ export function LogoMark({
         alt=""
         width={width}
         height={s.markHeight}
+        unoptimized
         style={{ height: s.markHeight, width: "auto" }}
         priority={size === "lg"}
         className="mb-2 shrink-0"

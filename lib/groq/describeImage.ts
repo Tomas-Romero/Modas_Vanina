@@ -48,7 +48,13 @@ export async function describeProductImage({
       },
     ],
     temperature: 0.6,
-    max_tokens: 200,
+    max_tokens: 300,
+    // Qwen3 models "think" before answering by default, which can burn the
+    // whole token budget on an invisible reasoning trace and leave the
+    // visible description empty. `none` turns that off for qwen3 models;
+    // harmless to leave set if GROQ_VISION_MODEL later points at a
+    // non-reasoning model, since Groq ignores params a model doesn't use.
+    reasoning_effort: "none",
   });
 
   const text = response.choices[0]?.message?.content?.trim();
