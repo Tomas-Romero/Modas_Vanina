@@ -65,7 +65,18 @@ export function Footer() {
         </div>
       </div>
       <div className="border-t border-line/70 py-4 text-center text-xs text-ink-soft">
-        © {new Date().getFullYear()} Modas Vanina
+        <p>© {new Date().getFullYear()} Modas Vanina</p>
+        <p className="mt-1">
+          Diseñado y desarrollado por{" "}
+          <a
+            href="https://www.linkedin.com/in/tomas-agustin-romero/"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="font-medium underline decoration-dotted underline-offset-2 transition-colors hover:text-accent"
+          >
+            Tomas Romero
+          </a>
+        </p>
       </div>
     </footer>
   );
