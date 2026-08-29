@@ -83,6 +83,9 @@ export function ImageUploader({
           Modo demo: las fotos se previsualizan localmente, no se suben de verdad hasta configurar Cloudinary.
         </p>
       )}
+      <p className="mb-2 text-xs text-ink-soft">
+        Mejor resultado: foto vertical (relación 4:5, ej. 1200×1500px), producto centrado y con margen alrededor.
+      </p>
       <div className="flex flex-wrap gap-3">
         {images.map((src, index) => (
           <div key={src + index} className="group relative h-24 w-24 overflow-hidden rounded-xl bg-surface-2">

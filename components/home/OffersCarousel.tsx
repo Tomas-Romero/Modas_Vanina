@@ -8,6 +8,9 @@ import { ProductImage } from "@/components/ui/ProductImage";
 import { cn } from "@/lib/cn";
 import type { Offer, Product } from "@/lib/types";
 
+const AUTOPLAY_INTERVAL = 4200;
+const PAUSE_AFTER_INTERACTION = 7000;
+
 export function OffersCarousel({
   offers,
   productsById,
@@ -18,6 +21,8 @@ export function OffersCarousel({
   const scrollerRef = useRef<HTMLDivElement>(null);
   const [activeIndex, setActiveIndex] = useState(0);
   const [canScroll, setCanScroll] = useState({ left: false, right: false });
+  const [paused, setPaused] = useState(false);
+  const resumeTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   const updateScrollState = useCallback(() => {
     const el = scrollerRef.current;
@@ -34,6 +39,13 @@ export function OffersCarousel({
     updateScrollState();
   }, [updateScrollState, offers.length]);
 
+  const scrollToIndex = useCallback((index: number) => {
+    const el = scrollerRef.current;
+    if (!el) return;
+    const cardWidth = el.firstElementChild?.clientWidth ?? 320;
+    el.scrollTo({ left: index * (cardWidth + 16), behavior: "smooth" });
+  }, []);
+
   function scrollByCard(direction: 1 | -1) {
     const el = scrollerRef.current;
     if (!el) return;
@@ -41,13 +53,48 @@ export function OffersCarousel({
     el.scrollBy({ left: direction * (cardWidth + 16), behavior: "smooth" });
   }
 
+  function pauseTemporarily() {
+    setPaused(true);
+    if (resumeTimeoutRef.current) clearTimeout(resumeTimeoutRef.current);
+    resumeTimeoutRef.current = setTimeout(() => setPaused(false), PAUSE_AFTER_INTERACTION);
+  }
+
+  // Gentle auto-advance, looping back to the start — paused on hover/touch
+  // and for a while after any manual interaction, and skipped entirely for
+  // prefers-reduced-motion.
+  useEffect(() => {
+    if (offers.length < 2 || paused) return;
+    if (typeof window !== "undefined" && window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+      return;
+    }
+    const id = setInterval(() => {
+      const el = scrollerRef.current;
+      if (!el) return;
+      const atEnd = el.scrollLeft >= el.scrollWidth - el.clientWidth - 8;
+      scrollToIndex(atEnd ? 0 : activeIndex + 1);
+    }, AUTOPLAY_INTERVAL);
+    return () => clearInterval(id);
+  }, [offers.length, paused, activeIndex, scrollToIndex]);
+
+  useEffect(() => {
+    return () => {
+      if (resumeTimeoutRef.current) clearTimeout(resumeTimeoutRef.current);
+    };
+  }, []);
+
   if (offers.length === 0) return null;
 
   return (
-    <div className="relative">
+    <div
+      className="relative"
+      onMouseEnter={() => setPaused(true)}
+      onMouseLeave={() => setPaused(false)}
+    >
       <div
         ref={scrollerRef}
         onScroll={updateScrollState}
+        onTouchStart={pauseTemporarily}
+        onPointerDown={pauseTemporarily}
         className="no-scrollbar -mx-4 flex snap-x snap-mandatory gap-4 overflow-x-auto px-4 pb-2 md:mx-0 md:px-0"
       >
         {offers.map((offer, i) => {
@@ -96,20 +143,33 @@ export function OffersCarousel({
 
       {offers.length > 1 && (
         <>
-          <div className="mt-3 hidden items-center justify-center gap-2 sm:flex">
+          <div className="mt-3 flex items-center justify-center gap-2">
             {offers.map((_, i) => (
-              <span
+              <button
                 key={i}
-                className={cn(
-                  "h-1.5 rounded-full transition-all",
-                  i === activeIndex ? "w-5 bg-accent" : "w-1.5 bg-line",
-                )}
-              />
+                type="button"
+                aria-label={`Ir a la oferta ${i + 1}`}
+                onClick={() => {
+                  pauseTemporarily();
+                  scrollToIndex(i);
+                }}
+                className="p-1"
+              >
+                <span
+                  className={cn(
+                    "block h-1.5 rounded-full transition-all",
+                    i === activeIndex ? "w-5 bg-accent" : "w-1.5 bg-line",
+                  )}
+                />
+              </button>
             ))}
           </div>
           <button
             type="button"
-            onClick={() => scrollByCard(-1)}
+            onClick={() => {
+              pauseTemporarily();
+              scrollByCard(-1);
+            }}
             disabled={!canScroll.left}
             aria-label="Ofertas anteriores"
             className="absolute left-0 top-1/2 hidden -translate-x-4 -translate-y-1/2 items-center justify-center rounded-full border border-line bg-surface p-2 shadow-soft transition-opacity disabled:pointer-events-none disabled:opacity-0 sm:flex"
@@ -118,7 +178,10 @@ export function OffersCarousel({
           </button>
           <button
             type="button"
-            onClick={() => scrollByCard(1)}
+            onClick={() => {
+              pauseTemporarily();
+              scrollByCard(1);
+            }}
             disabled={!canScroll.right}
             aria-label="Siguientes ofertas"
             className="absolute right-0 top-1/2 hidden -translate-y-1/2 translate-x-4 items-center justify-center rounded-full border border-line bg-surface p-2 shadow-soft transition-opacity disabled:pointer-events-none disabled:opacity-0 sm:flex"

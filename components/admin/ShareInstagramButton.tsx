@@ -5,6 +5,7 @@ import { Loader2 } from "lucide-react";
 import { InstagramIcon } from "@/components/ui/InstagramIcon";
 import { useToast } from "@/components/ui/Toast";
 import { generateInstagramCard } from "@/lib/canvas/instagramCard";
+import { SITE_URL } from "@/lib/constants";
 import type { Product } from "@/lib/types";
 
 export function ShareInstagramButton({ product }: { product: Product }) {
@@ -16,10 +17,11 @@ export function ShareInstagramButton({ product }: { product: Product }) {
     try {
       const blob = await generateInstagramCard(product);
       const file = new File([blob], `modas-vanina-${product.id}.jpg`, { type: "image/jpeg" });
+      const productUrl = `${SITE_URL}/catalogo?producto=${product.id}`;
       const shareData = {
         files: [file],
         title: product.name,
-        text: `Mirá "${product.name}" en Modas Vanina`,
+        text: `Mirá "${product.name}" en Modas Vanina\n${productUrl}`,
       };
 
       if (navigator.canShare?.(shareData)) {
@@ -33,7 +35,12 @@ export function ShareInstagramButton({ product }: { product: Product }) {
         a.click();
         a.remove();
         URL.revokeObjectURL(url);
-        showToast("Imagen descargada — subila desde la app de Instagram");
+        try {
+          await navigator.clipboard.writeText(productUrl);
+          showToast("Imagen descargada y link copiado — pegalo junto con la foto");
+        } catch {
+          showToast("Imagen descargada — subila desde la app de Instagram");
+        }
       }
     } catch (err) {
       if (err instanceof Error && err.name !== "AbortError") {

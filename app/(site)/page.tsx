@@ -8,7 +8,7 @@ import { RevealSection } from "@/components/home/RevealSection";
 import { getAllOffers } from "@/lib/data/offers";
 import { getProductsByIds } from "@/lib/data/products";
 import { isOfferActive } from "@/lib/types";
-import { STORE_STORY } from "@/lib/constants";
+import { STORE_SLOGAN, STORE_STORY } from "@/lib/constants";
 
 export const dynamic = "force-dynamic";
 
@@ -24,10 +24,19 @@ export default async function HomePage() {
       <section className="relative animate-fade-in overflow-hidden rounded-3xl border border-line bg-surface-2 px-6 py-12 text-center md:px-16 md:py-20">
         <div className="pointer-events-none absolute -right-16 -top-16 h-56 w-56 rounded-full bg-accent/10 blur-3xl" />
         <div className="pointer-events-none absolute -bottom-20 -left-16 h-56 w-56 rounded-full bg-gold/10 blur-3xl" />
-        <h1 className="relative mx-auto max-w-xl text-balance font-display text-3xl leading-tight text-ink md:text-5xl">
-          Un rincón de estilo en San Rafael
+        <h1 className="relative mx-auto flex flex-col items-center text-ink">
+          <span className="font-display text-xs font-medium uppercase tracking-[0.5em] text-ink-soft md:text-sm">
+            Modas
+          </span>
+          <span className="font-display text-4xl font-semibold uppercase leading-none tracking-wide md:text-6xl">
+            Vanina
+          </span>
         </h1>
-        <p className="relative mx-auto mt-4 max-w-md text-balance text-sm text-ink-soft md:text-base">
+        <span className="relative mx-auto mt-3 block h-px w-20 bg-gradient-to-r from-transparent via-gold to-transparent md:w-28" />
+        <p className="relative mx-auto mt-4 max-w-md text-balance text-sm font-medium text-accent md:text-base">
+          {STORE_SLOGAN}
+        </p>
+        <p className="relative mx-auto mt-3 max-w-md text-balance text-sm text-ink-soft md:text-base">
           {STORE_STORY}
         </p>
         <div className="relative mt-7 flex flex-wrap items-center justify-center gap-3">

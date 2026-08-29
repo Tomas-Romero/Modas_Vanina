@@ -23,10 +23,12 @@ export const INSTAGRAM_HANDLE = "modas.vanina";
 export const INSTAGRAM_URL = `https://instagram.com/${INSTAGRAM_HANDLE}`;
 
 export const STORE_HOURS = [
-  { day: "Lunes a viernes", hours: "9:15 - 13:30 y 17:00 - 21:00" },
-  { day: "Sábados", hours: "9:15 - 13:15" },
+  { day: "Lunes a viernes", hours: "9:15 - 13:15 y 17:30 - 21:15" },
+  { day: "Sábados", hours: "9:15 - 13:15 y 17:30 - 21:15" },
   { day: "Domingos", hours: "9:30 - 13:15" },
 ];
 
 export const STORE_STORY =
   "Modas Vanina es un espacio en San Rafael donde encontrás indumentaria, perfumería, cremas, tuppers y variedades, elegidos de a poco y con cariño.";
+
+export const STORE_SLOGAN = "Estilo, variedad y la calidez de siempre.";

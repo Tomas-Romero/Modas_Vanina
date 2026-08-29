@@ -3,9 +3,11 @@ import { InstagramIcon } from "@/components/ui/InstagramIcon";
 import { Logo } from "./Logo";
 import {
   ADDRESS,
+  INSTAGRAM_HANDLE,
   INSTAGRAM_URL,
   MAPS_LINK_URL,
   STORE_HOURS,
+  STORE_SLOGAN,
   WHATSAPP_DISPLAY,
   WHATSAPP_NUMBER,
 } from "@/lib/constants";
@@ -16,7 +18,8 @@ export function Footer() {
       <div className="mx-auto grid max-w-6xl gap-8 px-4 py-10 md:grid-cols-3 md:px-8">
         <div>
           <Logo variant="full" size="lg" />
-          <p className="mt-4 max-w-xs text-sm text-ink-soft">
+          <p className="mt-4 max-w-xs text-sm font-medium text-accent">{STORE_SLOGAN}</p>
+          <p className="mt-1.5 max-w-xs text-sm text-ink-soft">
             Indumentaria, perfumería, cremas, tuppers y variedades en San Rafael, Mendoza.
           </p>
         </div>
@@ -57,8 +60,7 @@ export function Footer() {
             rel="noopener noreferrer"
             className="mt-2 flex items-center gap-2 hover:text-ink"
           >
-            <InstagramIcon className="h-4 w-4 shrink-0" />
-            @modas_vanina
+            <InstagramIcon className="h-4 w-4 shrink-0" />@{INSTAGRAM_HANDLE}
           </a>
         </div>
       </div>

@@ -61,45 +61,53 @@ export function ProductosTable({ products }: { products: Product[] }) {
       ) : (
         <ul className="divide-y divide-line rounded-2xl border border-line bg-surface">
           {products.map((product) => (
-            <li key={product.id} className="flex items-center gap-4 p-4">
-              <div className="relative h-14 w-14 shrink-0 overflow-hidden rounded-lg bg-surface-2">
-                <ProductImage
-                  src={product.images[0]}
-                  alt={product.name}
-                  category={product.category}
-                  sizes="56px"
-                  className="object-cover"
-                />
+            <li key={product.id} className="flex flex-col gap-3 p-4 sm:flex-row sm:items-center sm:gap-4">
+              <div className="flex items-center gap-3 sm:flex-1 sm:gap-4">
+                <div className="relative h-14 w-14 shrink-0 overflow-hidden rounded-lg bg-surface-2">
+                  <ProductImage
+                    src={product.images[0]}
+                    alt={product.name}
+                    category={product.category}
+                    sizes="56px"
+                    className="object-cover"
+                  />
+                </div>
+                <div className="min-w-0 flex-1">
+                  <p className="truncate text-sm font-medium text-ink">{product.name}</p>
+                  <p className="text-xs text-ink-soft">{CATEGORY_LABELS[product.category]}</p>
+                </div>
+                <AvailabilityBadge availability={product.availability} className="shrink-0 sm:hidden" />
               </div>
-              <div className="min-w-0 flex-1">
-                <p className="truncate text-sm font-medium text-ink">{product.name}</p>
-                <p className="text-xs text-ink-soft">{CATEGORY_LABELS[product.category]}</p>
+
+              <div className="flex items-center justify-between gap-2 sm:justify-end sm:gap-2">
+                <AvailabilityBadge availability={product.availability} className="hidden sm:inline-flex" />
+                <div className="flex items-center gap-1" title={product.hidden ? "Oculto" : "Visible"}>
+                  <Switch
+                    checked={!product.hidden}
+                    onCheckedChange={() => handleToggleHidden(product)}
+                    disabled={isPending}
+                    aria-label={product.hidden ? "Mostrar producto" : "Ocultar producto"}
+                  />
+                </div>
+                <div className="flex items-center gap-0.5">
+                  <ShareInstagramButton product={product} />
+                  <PublishToSocialButton product={product} />
+                  <Link
+                    href={`/admin/productos/${product.id}`}
+                    className="rounded-full p-2 text-ink-soft hover:bg-surface-2 hover:text-ink"
+                    aria-label="Editar"
+                  >
+                    <Pencil className="h-4 w-4" />
+                  </Link>
+                  <button
+                    onClick={() => setToDelete(product)}
+                    className="rounded-full p-2 text-ink-soft hover:bg-accent/10 hover:text-accent"
+                    aria-label="Borrar"
+                  >
+                    <Trash2 className="h-4 w-4" />
+                  </button>
+                </div>
               </div>
-              <AvailabilityBadge availability={product.availability} className="hidden sm:inline-flex" />
-              <div className="flex items-center gap-2" title={product.hidden ? "Oculto" : "Visible"}>
-                <Switch
-                  checked={!product.hidden}
-                  onCheckedChange={() => handleToggleHidden(product)}
-                  disabled={isPending}
-                  aria-label={product.hidden ? "Mostrar producto" : "Ocultar producto"}
-                />
-              </div>
-              <ShareInstagramButton product={product} />
-              <PublishToSocialButton product={product} />
-              <Link
-                href={`/admin/productos/${product.id}`}
-                className="rounded-full p-2 text-ink-soft hover:bg-surface-2 hover:text-ink"
-                aria-label="Editar"
-              >
-                <Pencil className="h-4 w-4" />
-              </Link>
-              <button
-                onClick={() => setToDelete(product)}
-                className="rounded-full p-2 text-ink-soft hover:bg-accent/10 hover:text-accent"
-                aria-label="Borrar"
-              >
-                <Trash2 className="h-4 w-4" />
-              </button>
             </li>
           ))}
         </ul>

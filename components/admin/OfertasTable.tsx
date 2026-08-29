@@ -56,53 +56,60 @@ export function OfertasTable({ offers }: { offers: Offer[] }) {
       ) : (
         <ul className="divide-y divide-line rounded-2xl border border-line bg-surface">
           {offers.map((offer, index) => (
-            <li key={offer.id} className="flex items-center gap-4 p-4">
-              <div className="flex flex-col gap-0.5">
-                <button
-                  onClick={() => move(offer.id, "up")}
-                  disabled={isPending || index === 0}
-                  className="rounded p-0.5 text-ink-soft hover:text-ink disabled:opacity-30"
-                  aria-label="Subir"
-                >
-                  <ArrowUp className="h-3.5 w-3.5" />
-                </button>
-                <button
-                  onClick={() => move(offer.id, "down")}
-                  disabled={isPending || index === offers.length - 1}
-                  className="rounded p-0.5 text-ink-soft hover:text-ink disabled:opacity-30"
-                  aria-label="Bajar"
-                >
-                  <ArrowDown className="h-3.5 w-3.5" />
-                </button>
+            <li key={offer.id} className="flex flex-col gap-3 p-4 sm:flex-row sm:items-center sm:gap-4">
+              <div className="flex items-center gap-3 sm:flex-1 sm:gap-4">
+                <div className="flex shrink-0 flex-col gap-0.5">
+                  <button
+                    onClick={() => move(offer.id, "up")}
+                    disabled={isPending || index === 0}
+                    className="rounded p-0.5 text-ink-soft hover:text-ink disabled:opacity-30"
+                    aria-label="Subir"
+                  >
+                    <ArrowUp className="h-3.5 w-3.5" />
+                  </button>
+                  <button
+                    onClick={() => move(offer.id, "down")}
+                    disabled={isPending || index === offers.length - 1}
+                    className="rounded p-0.5 text-ink-soft hover:text-ink disabled:opacity-30"
+                    aria-label="Bajar"
+                  >
+                    <ArrowDown className="h-3.5 w-3.5" />
+                  </button>
+                </div>
+                <div className="min-w-0 flex-1">
+                  <p className="truncate text-sm font-medium text-ink">{offer.title}</p>
+                  <p className="text-xs text-ink-soft">
+                    {offer.product_ids.length} producto{offer.product_ids.length === 1 ? "" : "s"}
+                    {offer.ends_at ? ` · hasta ${new Date(offer.ends_at).toLocaleDateString("es-AR")}` : ""}
+                  </p>
+                </div>
               </div>
-              <div className="min-w-0 flex-1">
-                <p className="truncate text-sm font-medium text-ink">{offer.title}</p>
-                <p className="text-xs text-ink-soft">
-                  {offer.product_ids.length} producto{offer.product_ids.length === 1 ? "" : "s"}
-                  {offer.ends_at ? ` · hasta ${new Date(offer.ends_at).toLocaleDateString("es-AR")}` : ""}
-                </p>
+
+              <div className="flex items-center justify-between gap-2 sm:justify-end">
+                <span
+                  className={`rounded-full px-3 py-1 text-xs font-medium ${
+                    isOfferActive(offer) ? "bg-good/15 text-good" : "bg-ink-soft/15 text-ink-soft"
+                  }`}
+                >
+                  {isOfferActive(offer) ? "Activa" : "Inactiva"}
+                </span>
+                <div className="flex items-center gap-0.5">
+                  <Link
+                    href={`/admin/ofertas/${offer.id}`}
+                    className="rounded-full p-2 text-ink-soft hover:bg-surface-2 hover:text-ink"
+                    aria-label="Editar"
+                  >
+                    <Pencil className="h-4 w-4" />
+                  </Link>
+                  <button
+                    onClick={() => setToDelete(offer)}
+                    className="rounded-full p-2 text-ink-soft hover:bg-accent/10 hover:text-accent"
+                    aria-label="Borrar"
+                  >
+                    <Trash2 className="h-4 w-4" />
+                  </button>
+                </div>
               </div>
-              <span
-                className={`rounded-full px-3 py-1 text-xs font-medium ${
-                  isOfferActive(offer) ? "bg-good/15 text-good" : "bg-ink-soft/15 text-ink-soft"
-                }`}
-              >
-                {isOfferActive(offer) ? "Activa" : "Inactiva"}
-              </span>
-              <Link
-                href={`/admin/ofertas/${offer.id}`}
-                className="rounded-full p-2 text-ink-soft hover:bg-surface-2 hover:text-ink"
-                aria-label="Editar"
-              >
-                <Pencil className="h-4 w-4" />
-              </Link>
-              <button
-                onClick={() => setToDelete(offer)}
-                className="rounded-full p-2 text-ink-soft hover:bg-accent/10 hover:text-accent"
-                aria-label="Borrar"
-              >
-                <Trash2 className="h-4 w-4" />
-              </button>
             </li>
           ))}
         </ul>

@@ -5,10 +5,12 @@ import { LogoMark } from "@/components/layout/Logo";
 import { RevealSection } from "@/components/home/RevealSection";
 import {
   ADDRESS,
+  INSTAGRAM_HANDLE,
   INSTAGRAM_URL,
   MAPS_EMBED_URL,
   MAPS_LINK_URL,
   STORE_HOURS,
+  STORE_SLOGAN,
   STORE_STORY,
   WHATSAPP_DISPLAY,
   WHATSAPP_NUMBER,
@@ -26,7 +28,8 @@ export default function NosotrosPage() {
       <div className="flex justify-center">
         <LogoMark size="lg" />
       </div>
-      <h1 className="mt-6 text-center font-display text-2xl text-ink md:text-3xl">Nuestra historia</h1>
+      <p className="mt-4 text-center text-sm font-medium text-accent">{STORE_SLOGAN}</p>
+      <h1 className="mt-2 text-center font-display text-2xl text-ink md:text-3xl">Nuestra historia</h1>
       <p className="mx-auto mt-4 max-w-xl text-balance text-center leading-relaxed text-ink-soft">
         {STORE_STORY}
       </p>
@@ -79,7 +82,7 @@ export default function NosotrosPage() {
         </a>
         <a href={INSTAGRAM_URL} target="_blank" rel="noopener noreferrer" className="flex-1">
           <Button variant="secondary" size="lg" className="w-full">
-            <InstagramIcon className="h-4 w-4" /> @modas_vanina
+            <InstagramIcon className="h-4 w-4" /> @{INSTAGRAM_HANDLE}
           </Button>
         </a>
       </RevealSection>
