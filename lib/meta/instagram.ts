@@ -3,11 +3,16 @@ import { graphGet, graphPost, hasInstagramConfig } from "./client";
 export { hasInstagramConfig };
 
 interface CreationResponse {
-  id: string;
+  id?: string;
 }
 
 interface ContainerStatus {
   status_code: "IN_PROGRESS" | "FINISHED" | "ERROR" | "EXPIRED";
+}
+
+interface PostExistsResponse {
+  id?: string;
+  permalink?: string;
 }
 
 async function waitForContainerReady(creationId: string, token: string, attempts = 6): Promise<void> {
@@ -44,6 +49,7 @@ export async function publishToInstagram({
     caption,
     access_token: token,
   });
+  if (!created.id) throw new Error("Instagram no devolvió un ID de contenedor al crear la publicación.");
 
   await waitForContainerReady(created.id, token);
 
@@ -51,6 +57,21 @@ export async function publishToInstagram({
     creation_id: created.id,
     access_token: token,
   });
+  if (!published.id) throw new Error("Instagram no devolvió un ID de publicación.");
+
+  // Don't trust the publish response alone — confirm the media is really
+  // there before reporting success (Meta has returned a valid-looking
+  // success that didn't stick, confirmed 2026-08-28 on the Facebook side).
+  const verify = await graphGet<PostExistsResponse>(published.id, {
+    fields: "id",
+    access_token: token,
+  }).catch(() => null);
+
+  if (!verify?.id) {
+    throw new Error(
+      "Instagram confirmó la publicación pero no aparece al volver a consultarla — puede haber sido removida automáticamente. No la des por publicada.",
+    );
+  }
 
   return { postId: published.id };
 }

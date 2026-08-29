@@ -1,6 +1,8 @@
-// Shared Meta Graph API config + fetch helper for Instagram/Facebook
-// publishing. One long-lived User token (META_ACCESS_TOKEN, ~60 days) is
-// used for both — see the admin note in .env.local about renewing it.
+// Shared Graph API config + fetch helper for Instagram/Facebook publishing.
+// One long-lived Facebook User token (META_ACCESS_TOKEN, ~60 days) is used
+// for both — Instagram works via the classic Page-linked flow (the store's
+// Instagram Business account is linked to the "Modas Vanina" Facebook
+// Page), so both integrations share graph.facebook.com and this one token.
 export const GRAPH_VERSION = "v21.0";
 export const GRAPH_BASE = `https://graph.facebook.com/${GRAPH_VERSION}`;
 

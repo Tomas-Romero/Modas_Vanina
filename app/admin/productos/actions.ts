@@ -13,6 +13,13 @@ import {
 import { hasInstagramConfig, publishToInstagram } from "@/lib/meta/instagram";
 import { hasFacebookConfig, publishToFacebookPage } from "@/lib/meta/facebook";
 import { buildSocialCaption } from "@/lib/meta/caption";
+import { getSocialAccountsInfo, type SocialAccountsInfo } from "@/lib/meta/accounts";
+
+export async function getSocialAccountsInfoAction(): Promise<SocialAccountsInfo | { error: string }> {
+  const admin = await requireAdmin();
+  if (!admin.ok) return { error: admin.error };
+  return getSocialAccountsInfo();
+}
 
 type ActionResult = { ok: true; id?: string } | { ok: false; error: string };
 

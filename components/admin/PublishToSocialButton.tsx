@@ -2,9 +2,14 @@
 
 import { useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
-import { CheckCircle2, Loader2, Send, XCircle } from "lucide-react";
+import { AlertTriangle, CheckCircle2, Loader2, Send, XCircle } from "lucide-react";
 import { Button } from "@/components/ui/Button";
-import { publishToSocialAction, type PublishToSocialResult } from "@/app/admin/productos/actions";
+import {
+  publishToSocialAction,
+  getSocialAccountsInfoAction,
+  type PublishToSocialResult,
+} from "@/app/admin/productos/actions";
+import type { SocialAccountsInfo } from "@/lib/meta/accounts";
 import type { Product } from "@/lib/types";
 
 export function PublishToSocialButton({ product }: { product: Product }) {
@@ -14,11 +19,17 @@ export function PublishToSocialButton({ product }: { product: Product }) {
   const [loading, setLoading] = useState(false);
   const [result, setResult] = useState<PublishToSocialResult | null>(null);
   const [error, setError] = useState<string | null>(null);
+  const [accounts, setAccounts] = useState<SocialAccountsInfo | { error: string } | null>(null);
+  const [loadingAccounts, setLoadingAccounts] = useState(false);
 
-  function openDialog() {
+  async function openDialog() {
     setResult(null);
     setError(null);
     setOpen(true);
+    setLoadingAccounts(true);
+    const info = await getSocialAccountsInfoAction();
+    setAccounts(info);
+    setLoadingAccounts(false);
   }
 
   async function handlePublish() {
@@ -32,6 +43,8 @@ export function PublishToSocialButton({ product }: { product: Product }) {
     }
     setResult(res.result);
   }
+
+  const accountsError = accounts && "error" in accounts ? accounts.error : null;
 
   return (
     <>
@@ -69,24 +82,49 @@ export function PublishToSocialButton({ product }: { product: Product }) {
 
               {!result && (
                 <div className="mt-5 space-y-2.5">
-                  <label className="flex items-center gap-3 rounded-xl border border-line px-3 py-2.5">
-                    <input
-                      type="checkbox"
-                      checked={instagram}
-                      onChange={(e) => setInstagram(e.target.checked)}
-                      className="h-4 w-4 rounded accent-[var(--accent)]"
-                    />
-                    <span className="text-sm text-ink">Instagram</span>
-                  </label>
-                  <label className="flex items-center gap-3 rounded-xl border border-line px-3 py-2.5">
-                    <input
-                      type="checkbox"
-                      checked={facebook}
-                      onChange={(e) => setFacebook(e.target.checked)}
-                      className="h-4 w-4 rounded accent-[var(--accent)]"
-                    />
-                    <span className="text-sm text-ink">Página de Facebook</span>
-                  </label>
+                  {loadingAccounts && (
+                    <p className="flex items-center gap-2 text-sm text-ink-soft">
+                      <Loader2 className="h-3.5 w-3.5 animate-spin" /> Confirmando cuentas de destino...
+                    </p>
+                  )}
+                  {accountsError && (
+                    <p className="flex items-start gap-2 rounded-xl border border-accent/30 bg-accent/5 p-3 text-sm text-accent">
+                      <AlertTriangle className="mt-0.5 h-4 w-4 shrink-0" /> No pude confirmar las cuentas:{" "}
+                      {accountsError}
+                    </p>
+                  )}
+                  <AccountToggle
+                    label="Instagram"
+                    checked={instagram}
+                    onChange={setInstagram}
+                    detail={
+                      accounts && !("error" in accounts)
+                        ? accounts.instagram && "username" in accounts.instagram
+                          ? `Se va a publicar en @${accounts.instagram.username}`
+                          : accounts.instagram && "error" in accounts.instagram
+                            ? `No disponible: ${accounts.instagram.error}`
+                            : "No configurado"
+                        : null
+                    }
+                  />
+                  <AccountToggle
+                    label="Página de Facebook"
+                    checked={facebook}
+                    onChange={setFacebook}
+                    detail={
+                      accounts && !("error" in accounts)
+                        ? accounts.facebook && "name" in accounts.facebook
+                          ? `Se va a publicar en "${accounts.facebook.name}"`
+                          : accounts.facebook && "error" in accounts.facebook
+                            ? `No disponible: ${accounts.facebook.error}`
+                            : "No configurado"
+                        : null
+                    }
+                  />
+                  <p className="text-xs text-ink-soft">
+                    Revisá que sean las cuentas correctas antes de publicar — es una acción pública e
+                    inmediata.
+                  </p>
                 </div>
               )}
 
@@ -104,7 +142,10 @@ export function PublishToSocialButton({ product }: { product: Product }) {
                   {result ? "Cerrar" : "Cancelar"}
                 </Button>
                 {!result && (
-                  <Button onClick={handlePublish} disabled={loading || (!instagram && !facebook)}>
+                  <Button
+                    onClick={handlePublish}
+                    disabled={loading || loadingAccounts || !!accountsError || (!instagram && !facebook)}
+                  >
                     {loading && <Loader2 className="h-4 w-4 animate-spin" />}
                     Publicar
                   </Button>
@@ -115,6 +156,33 @@ export function PublishToSocialButton({ product }: { product: Product }) {
         )}
       </AnimatePresence>
     </>
+  );
+}
+
+function AccountToggle({
+  label,
+  checked,
+  onChange,
+  detail,
+}: {
+  label: string;
+  checked: boolean;
+  onChange: (value: boolean) => void;
+  detail: string | null;
+}) {
+  return (
+    <label className="flex items-start gap-3 rounded-xl border border-line px-3 py-2.5">
+      <input
+        type="checkbox"
+        checked={checked}
+        onChange={(e) => onChange(e.target.checked)}
+        className="mt-0.5 h-4 w-4 rounded accent-[var(--accent)]"
+      />
+      <span>
+        <span className="block text-sm text-ink">{label}</span>
+        {detail && <span className="block text-xs text-ink-soft">{detail}</span>}
+      </span>
+    </label>
   );
 }
 
@@ -135,7 +203,7 @@ function PlatformResultRow({
       )}
       <div className="text-sm">
         <p className="font-medium text-ink">{label}</p>
-        <p className="text-ink-soft">{result.ok ? "Publicado correctamente." : result.error}</p>
+        <p className="text-ink-soft">{result.ok ? "Publicado y confirmado." : result.error}</p>
       </div>
     </div>
   );
