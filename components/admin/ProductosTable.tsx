@@ -79,17 +79,20 @@ export function ProductosTable({ products }: { products: Product[] }) {
                 <AvailabilityBadge availability={product.availability} className="shrink-0 sm:hidden" />
               </div>
 
-              <div className="flex items-center justify-between gap-2 sm:justify-end sm:gap-2">
-                <AvailabilityBadge availability={product.availability} className="hidden sm:inline-flex" />
-                <div className="flex items-center gap-1" title={product.hidden ? "Oculto" : "Visible"}>
-                  <Switch
-                    checked={!product.hidden}
-                    onCheckedChange={() => handleToggleHidden(product)}
-                    disabled={isPending}
-                    aria-label={product.hidden ? "Mostrar producto" : "Ocultar producto"}
-                  />
+              <div className="flex items-center justify-between gap-3 sm:justify-end sm:gap-4">
+                <div className="flex items-center gap-3">
+                  <AvailabilityBadge availability={product.availability} className="hidden sm:inline-flex" />
+                  <div className="flex items-center" title={product.hidden ? "Oculto" : "Visible"}>
+                    <Switch
+                      checked={!product.hidden}
+                      onCheckedChange={() => handleToggleHidden(product)}
+                      disabled={isPending}
+                      aria-label={product.hidden ? "Mostrar producto" : "Ocultar producto"}
+                    />
+                  </div>
                 </div>
-                <div className="flex items-center gap-0.5">
+                <div className="h-6 w-px shrink-0 bg-line" aria-hidden="true" />
+                <div className="flex items-center gap-1">
                   <ShareInstagramButton product={product} />
                   <PublishToSocialButton product={product} />
                   <Link
