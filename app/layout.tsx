@@ -5,6 +5,7 @@ import { ToastProvider } from "@/components/ui/Toast";
 import { RouteProgressBar } from "@/components/layout/RouteProgressBar";
 import { InitialSplash } from "@/components/layout/InitialSplash";
 import { SITE_URL, STORE_NAME } from "@/lib/constants";
+import { getLocalBusinessJsonLd } from "@/lib/structured-data";
 import "./globals.css";
 
 const fraunces = Fraunces({
@@ -34,6 +35,9 @@ export const metadata: Metadata = {
     template: `%s — ${STORE_NAME}`,
   },
   description: DESCRIPTION,
+  alternates: {
+    canonical: SITE_URL,
+  },
   openGraph: {
     title: `${STORE_NAME} — Catálogo`,
     description: DESCRIPTION,
@@ -64,6 +68,10 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
       className={`${fraunces.variable} ${workSans.variable} ${ibmPlexMono.variable}`}
     >
       <body className="font-sans antialiased">
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(getLocalBusinessJsonLd()) }}
+        />
         <ThemeProvider attribute="class" defaultTheme="dark" enableSystem={false}>
           <ToastProvider>
             <RouteProgressBar />
